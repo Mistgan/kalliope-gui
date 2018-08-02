@@ -81,14 +81,16 @@ class Application:
 
 
   def Refresh(self):
-#    Centreon_Host.forget()
-#    Centreon_Service.forget()
-#    GLPI_New_ticket.forget(self)
-    GLPI_New_Ticket.pack_forget()
     self.ticket()
     self.centreon()
+    self.Delete_frame(GLPI_New_Ticket)
     self.master.after(self.TimeInterval, self.Refresh )
 
+
+
+  def Delete_frame(self,frame):
+    for widget in frame.winfo_children():
+      widget.pack_forget()
 
 
 root = Tk()
