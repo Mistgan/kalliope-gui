@@ -12,33 +12,36 @@ class Application:
     frame['bg'] = 'white'
     frame.pack()
 
-    self.TimeInterval = 2000
+    self.TimeInterval = 600000
 
 # Interface principal Centreon & GLPI
-
-    Centreon = Frame(frame, borderwidth=2, relief=GROOVE)
-    Centreon.pack(side=RIGHT, padx=30, pady=30)
 
     GLPI = Frame(frame, borderwidth=2, relief=GROOVE)
     GLPI.pack(side=LEFT, padx=30, pady=30)
 
-    Centreon_label = Label(Centreon, text="Information Centreon ")
-    Centreon_label.pack(padx=10, pady=10)
-
-    Centreon_Host = PanedWindow(Centreon, orient=VERTICAL)
-    Centreon_Host.pack(side=LEFT, expand=Y, fill=BOTH, pady=5, padx=5)
-    Centreon_Host.add(Label(Centreon_Host, text="Host Probleme", background='cyan', anchor=CENTER))
-
-    Centreon_Service = PanedWindow(Centreon, orient=VERTICAL)
-    Centreon_Service.pack(side=RIGHT, expand=Y, fill=BOTH, pady=5, padx=5)
-    Centreon_Service.add(Label(Centreon_Service, text="Service Probleme", background='cyan', anchor=CENTER))
-
     GLPI_label = Label(GLPI, text="Information GLPI")
     GLPI_label.pack(padx=10, pady=10)
 
-    GLPI_New_Ticket = PanedWindow(GLPI, orient=VERTICAL)
-    GLPI_New_Ticket.pack(side=TOP, expand=Y, fill=BOTH, pady=5, padx=5)
-    GLPI_New_Ticket.add(Label(GLPI_New_Ticket, text="Nouveau TICKET", background='cyan', anchor=CENTER))
+    GLPI_New_Ticket = Frame(GLPI)
+    GLPI_New_Ticket.pack(side=TOP)
+
+    Centreon = Frame(frame, borderwidth=2, relief=GROOVE)
+    Centreon.pack(side=RIGHT, padx=30, pady=30)
+
+
+    Centreon_label = Label(Centreon, text="Information Centreon ")
+    Centreon_label.pack(padx=10, pady=10)
+
+    Centreon_Host = Frame(Centreon)
+    Centreon_Host.pack(side=RIGHT)
+    Centreon__Host_label = Label(Centreon_Host, text="Information Centreon Hosts")
+    Centreon__Host_label.pack()
+
+
+    Centreon_Service = Frame(Centreon)
+    Centreon_Service.pack(side=LEFT)
+    Centreon__Service_label = Label(Centreon_Service, text="Information Centreon Services")
+    Centreon__Service_label.pack()
 
     self.Refresh()
 
@@ -46,44 +49,45 @@ class Application:
 # Recuperation des nouveaux tickets
 
     new_ticket = New_Ticket()
+    self.Delete_frame(GLPI_New_Ticket)
 
 # Interface GLPI
-
+    Label(GLPI_New_Ticket, text="Nouveau TICKET", background='cyan', anchor=CENTER).pack()
     if len(new_ticket) == 0:
-      GLPI_New_Ticket.add(Label(GLPI_New_Ticket, text="Aucun Nouveau Ticket", background='white', anchor=CENTER))
+        Label(GLPI_New_Ticket, text="Aucun Nouveau Ticket", background='white', anchor=CENTER).pack()
     else:
       for i in new_ticket:
-        GLPI_New_Ticket.add(Label(GLPI_New_Ticket, text=i['name'], background='white', anchor=CENTER))
+        Label(GLPI_New_Ticket, text=i['name'], background='white', anchor=CENTER).pack()
 
   def centreon(self):
 # Recuperation Info Centreon
-
     problem_centreon = Centreon_Status()
+    hosts_problems = problem_centreon[0]
+    services_problems = problem_centreon[1]
 
 # Interface Centreon
 
     # Interface Host
-
-    if len(problem_centreon[0]) == 0:
-      Centreon_Host.add(Label(Centreon_Host, text="Host : Aucun  Probleme", background='white', anchor=CENTER))
+    self.Delete_frame(Centreon_Host)
+    Label(Centreon_Host, text="Hosts Probleme", background='cyan', anchor=CENTER).pack()
+    if len(hosts_problems) == 0:
+        Label(Centreon_Host, text="Host : Aucun  Probleme", background='white', anchor=CENTER).pack()
     else:
-      for problem_host in problem_centreon[0]:
-        Centreon_Host.add(Label(Centreon_Host, text=problem_host['name'], background='white', anchor=CENTER))
+      for p in range(len(hosts_problems)):
+          Label(Centreon_Host, text=hosts_problems[p], background='white', anchor=CENTER).pack()
 
     # Interface Service
-
-    if len(problem_centreon[1]) == 0:
-      Centreon_Service.add(Label(Centreon_Service, text="Service : Aucun Probleme", background='white', anchor=CENTER))
+    self.Delete_frame(Centreon_Service)
+    Label(Centreon_Service, text="Services Probleme", background='cyan', anchor=CENTER).pack()
+    if len(services_problems) == 0:
+        Label(Centreon_Service, text="Service : Aucun Probleme", background='white', anchor=CENTER).pack()
     else:
-      for problem_service in problem_centreon[1]:
-        Centreon_Service.add(Label(Centreon_Service, text=problem_service['name'], background='white', anchor=CENTER))
-
-
+      for q in range(len(services_problems)):
+          Label(Centreon_Service, text=services_problems[q], background='white', anchor=CENTER).pack()
 
   def Refresh(self):
     self.ticket()
     self.centreon()
-    self.Delete_frame(GLPI_New_Ticket)
     self.master.after(self.TimeInterval, self.Refresh )
 
 

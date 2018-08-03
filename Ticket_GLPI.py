@@ -40,7 +40,7 @@ def New_Ticket():
 
   lng_new_ticket = 0
   for ticket in all_ticket:
-    if ticket["status"] == 1:
+    if ticket["status"] == 2:
       lng_new_ticket += 1
       new_ticket.append(ticket)
 

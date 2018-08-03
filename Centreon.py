@@ -60,19 +60,18 @@ def Centreon_Status():
 
   if lng_status > 0 or lng_hosts > 0:
     for x in status:
-      if (x['output'].find('CRITICAL') != -1) and ((int(time.time()) - int(x['last_state_change'])) >= 240) and ( (int(time.time()) - int(x['last_state_change'])) <= 840):
+      if (x['output'].find('CRITICAL') != -1) and ((int(time.time()) - int(x['last_state_change'])) >= 240) and ( (int(time.time()) - int(x['last_state_change'])) <= 900000):
         print("Les services " + x['name']  + " sont toujours indisponible")
-        service_problem.append(x)
+        service_problem.append(x['name'])
     for y in hosts:
-           if ( (int(time.time()) - int(y['last_state_change'])) >= 240 ) and ( (int(time.time()) - int(y['last_state_change'])) <= 840 ):
-             print("Les host  " + y['name'] + ", est toujours inactif")
-             host_problem.append(y)
+           if ( (int(time.time()) - int(y['last_state_change'])) >= 240 ) and ( (int(time.time()) - int(y['last_state_change'])) <= 900000):
+             print("Les host  " + y['alias'] + ", est toujours inactif")
+             host_problem.append(y['alias'])
 
 
   problems = []
   problems.append(host_problem)
   problems.append(service_problem)
-
 
 
   if not (len(host_problem) > 0 or len(service_problem) > 0):
