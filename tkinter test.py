@@ -8,7 +8,7 @@ class Application:
   def __init__(self,master):
     global frame, Centreon, GLPI, Centreon_Host, Centreon_Service, GLPI_New_Ticket
     self.master = master
-    frame = Frame(master)
+    frame = Frame(master, width =1080, height =720)
     frame['bg'] = 'white'
     frame.pack()
 
