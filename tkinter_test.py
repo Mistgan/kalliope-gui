@@ -8,40 +8,43 @@ class Application:
   def __init__(self,master):
     global frame, Centreon, GLPI, Centreon_Host, Centreon_Service, GLPI_New_Ticket
     self.master = master
-    frame = Frame(master, width =1080, height =720)
+    frame = Frame(master)
     frame['bg'] = 'white'
     frame.pack()
 
-    self.TimeInterval = 600000
+    self.TimeInterval = 60000
 
 # Interface principal Centreon & GLPI
 
+    # Frame principal de GLPI
     GLPI = Frame(frame, borderwidth=2, relief=GROOVE)
     GLPI.pack(side=LEFT, padx=30, pady=30)
 
     GLPI_label = Label(GLPI, text="Information GLPI")
     GLPI_label.pack(padx=10, pady=10)
 
-    GLPI_New_Ticket = Frame(GLPI)
+    # Frame qui contiendra tous les tickets
+    GLPI_New_Ticket = Frame(GLPI, borderwidth=2, relief=GROOVE)
     GLPI_New_Ticket.pack(side=TOP)
+    GLPI_New_Ticket['bg'] = 'white'
 
+    # Frame principal de Centreon
     Centreon = Frame(frame, borderwidth=2, relief=GROOVE)
     Centreon.pack(side=RIGHT, padx=30, pady=30)
-
 
     Centreon_label = Label(Centreon, text="Information Centreon ")
     Centreon_label.pack(padx=10, pady=10)
 
-    Centreon_Host = Frame(Centreon)
+
+    # Frame qui contiendra tous les hosts qui pose probleme
+    Centreon_Host = Frame(Centreon, borderwidth=2, relief=GROOVE)
     Centreon_Host.pack(side=RIGHT)
-    Centreon__Host_label = Label(Centreon_Host, text="Information Centreon Hosts")
-    Centreon__Host_label.pack()
+    Centreon_Host['bg'] = 'white'
 
-
-    Centreon_Service = Frame(Centreon)
+    # Frame qui contiendra tous les services qui pose probleme
+    Centreon_Service = Frame(Centreon, borderwidth=2, relief=GROOVE)
     Centreon_Service.pack(side=LEFT)
-    Centreon__Service_label = Label(Centreon_Service, text="Information Centreon Services")
-    Centreon__Service_label.pack()
+    Centreon_Service['bg'] = 'white'
 
     self.Refresh()
 
@@ -101,4 +104,5 @@ root = Tk()
 app = Application(root)
 root.title('Nikita')
 root['bg'] = 'white'
+root.attributes("-fullscreen", True)
 root.mainloop()

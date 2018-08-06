@@ -7,8 +7,7 @@ import os
 import sys
 
 def New_Ticket():
-
-  user_token ='xZDDA9w94w1dKVHy7ZWQYJ0odCXpPkof0fQLiMWh'
+  # Authentification au compte stagiaire.info afin de recuperer le token de session
   app_token = '0ak4H1pmTmzj4yANaMlC2OU5ZvXL92WA7ipLlItB'
   url ='http://glpi/glpi/apirest.php/initSession'
 
@@ -18,7 +17,6 @@ def New_Ticket():
       'App-Token':'0ak4H1pmTmzj4yANaMlC2OU5ZvXL92WA7ipLlItB'
   }
 
-
   response = requests.get('http://glpi/glpi/apirest.php/initSession', headers = headers)
 
 
@@ -26,6 +24,7 @@ def New_Ticket():
 
   token = Init_session['session_token']
 
+  # Recuperation des tickets
   headers_ticket = {
       'Content-Type':'application/json',
       'Session-Token' : token,
@@ -33,17 +32,19 @@ def New_Ticket():
   }
 
   response = requests.get('http://glpi/glpi/apirest.php/Ticket/?order=DESC&expand_drodpowns=true', headers = headers_ticket)
-
+  # On stock tous les tickets
   all_ticket = json.loads(response.text)
   global new_ticket
   new_ticket = []
 
   lng_new_ticket = 0
+  # On verifie leurs status
+  # 1 = Nouveau
   for ticket in all_ticket:
     if ticket["status"] == 1:
       lng_new_ticket += 1
       new_ticket.append(ticket)
-
+  # On retourne la phrase que Nikita lira lors d'une demande vocal
   if lng_new_ticket != 0:
     print("La pause est terminer messieurs")
     print("Vous avez %s nouveaux tickets" % lng_new_ticket)
