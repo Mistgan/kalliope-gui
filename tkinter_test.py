@@ -12,7 +12,7 @@ class Application:
     frame['bg'] = 'white'
     frame.pack()
 
-    self.TimeInterval = 60000
+    self.TimeInterval = 2000
 
 # Interface principal Centreon & GLPI
 
@@ -91,6 +91,7 @@ class Application:
   def Refresh(self):
     self.ticket()
     self.centreon()
+
     self.master.after(self.TimeInterval, self.Refresh )
 
 

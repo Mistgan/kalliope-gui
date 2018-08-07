@@ -48,8 +48,8 @@ def New_Ticket():
   if lng_new_ticket != 0:
     print("La pause est terminer messieurs")
     print("Vous avez %s nouveaux tickets" % lng_new_ticket)
-  else:
-    print("Vous n'avez aucun nouveaux ticket")
+#  else:
+#    print("Vous n'avez aucun nouveaux ticket")
 
   return new_ticket
 
